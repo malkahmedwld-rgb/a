@@ -5,70 +5,408 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>عرض منهجي: قانون الطيران المدني 98-06</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
     <style>
-        /* تنسيقات إضافية للفهرس التفاعلي */
+        /* =========================================
+           1. تنسيقات المتغيرات والألوان (CSS Root)
+           ========================================= */
+        :root {
+            --primary-color: #1a4d2e; /* أخضر غامق للسيادة */
+            --secondary-color: #c9a227; /* ذهبي للإبراز */
+            --accent-light: #e8f5e9; 
+            --bg-color: #eceff1;
+            --text-color: #333;
+            --slide-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            height: 100vh;
+            /* حل لمشاكل متصفحات الجوال */
+            height: 100dvh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           2. هيكل العرض (Slider Container)
+           ========================================= */
+        .slider-container {
+            position: relative;
+            width: 95%;
+            max-width: 1000px; /* عرض مناسب للحواسيب */
+            height: 92%;
+            max-height: 750px;
+            background: var(--slide-bg);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            border-top: 6px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slides-wrapper {
+            position: relative;
+            flex: 1; /* يأخذ المساحة المتبقية */
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #ffffff 0%, #f7f9f8 100%);
+        }
+
+        /* =========================================
+           3. تنسيقات الشرائح (Slides Animation)
+           ========================================= */
+        .slide {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            pointer-events: none;
+            overflow-y: auto; /* للسماح بالتمرير داخل الشريحة */
+            scrollbar-width: thin;
+            transform: translateX(20px); /* تأثير حركة الدخول */
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
+            z-index: 1;
+        }
+
+        /* =========================================
+           4. النصوص والعناوين (Typography)
+           ========================================= */
+        .header-logos {
+            font-family: 'Amiri', serif;
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            color: var(--primary-color);
+            font-size: clamp(1.6rem, 5vw, 2.8rem);
+            margin: 15px 0;
+            font-weight: 800;
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .sub-title {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: #444;
+            font-family: 'Amiri', serif;
+            margin-bottom: 20px;
+        }
+
+        .slide-header {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .slide-title {
+            color: var(--primary-color);
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin: 0;
+            font-family: 'Amiri', serif;
+        }
+
+        .content-body {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .content-body ul {
+            padding-right: 20px;
+        }
+
+        .content-body li {
+            margin-bottom: 10px;
+        }
+
+        /* =========================================
+           5. مربعات المعلومات (Info Boxes)
+           ========================================= */
+        .info-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-box {
+            background: #fcfcfc;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            flex: 1;
+            min-width: 220px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .student-box { border-right: 4px solid var(--secondary-color); }
+        .prof-box { border-right: 4px solid var(--primary-color); }
+
+        .info-box h3 {
+            color: var(--primary-color);
+            margin: 0 0 8px 0;
+            font-size: 1.1rem;
+            font-family: 'Amiri', serif;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        /* =========================================
+           6. الفهرس التفاعلي (Table of Contents)
+           ========================================= */
         .toc-list {
             list-style: none;
             padding: 0;
             margin-top: 20px;
         }
+
         .toc-list li {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            margin-bottom: 15px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-right: 5px solid #ccc;
+            margin-bottom: 12px;
             padding: 15px;
             border-radius: 8px;
-            cursor: pointer; /* جعل المؤشر يد يدل على قابلية النقر */
+            cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             font-weight: bold;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .toc-list li:hover {
+            border-right-color: var(--primary-color);
+            background: #f1f8f3;
+            transform: translateX(-5px);
             color: var(--primary-color);
         }
-        .toc-list li:hover {
+
+        .toc-number {
             background: var(--primary-color);
             color: #fff;
-            transform: translateX(-10px); /* حركة بسيطة عند التمرير */
-        }
-        .toc-number {
-            background: var(--secondary-color);
-            color: #fff;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            margin-left: 15px;
-            font-family: 'Tajawal', sans-serif;
-        }
-        
-        /* تحسين عرض الوثائق */
-        .doc-container {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            margin-top: 10px;
-        }
-        .doc-image {
-            max-height: 50vh; /* تحديد ارتفاع مناسب للشاشة */
-            width: auto;
-            max-width: 100%;
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            border-radius: 4px;
-            cursor: zoom-in; /* إشارة لإمكانية التكبير مستقبلاً */
-        }
-        .doc-caption {
-            font-family: 'Amiri', serif;
+            margin-left: 15px;
             font-size: 0.9rem;
-            color: #555;
-            margin-top: 8px;
-            background: #fffde7;
+            font-family: 'Tajawal', sans-serif;
+            flex-shrink: 0;
+        }
+
+        /* =========================================
+           7. تنسيق الصور والوثائق (Documents)
+           ========================================= */
+        .doc-container {
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f4f4f4;
+            border-radius: 10px;
+            border: 1px dashed #bbb;
+        }
+
+        .doc-image {
+            max-height: 45vh; /* ارتفاع ديناميكي */
+            max-width: 100%;
+            width: auto;
+            border: 3px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s;
+        }
+
+        /* تكبير الصورة عند وضع الفأرة عليها (للحاسوب) */
+        .doc-image:hover {
+            transform: scale(1.02);
+        }
+
+        .doc-caption {
+            margin-top: 12px;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            background: #fff;
             padding: 5px 15px;
+            display: inline-block;
             border-radius: 20px;
-            border: 1px solid #fbc02d;
+            border: 1px solid #d4af37; /* لون ذهبي */
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* =========================================
+           8. الخاتمة والإشكاليات
+           ========================================= */
+        .academic-highlight-box {
+            background-color: var(--accent-light);
+            border-right: 5px solid var(--secondary-color);
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Amiri', serif;
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        .conclusion-box {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            box-shadow: 0 5px 15px rgba(26, 77, 46, 0.3);
+        }
+
+        .thank-you {
+            color: var(--secondary-color);
+            margin-top: 30px;
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* =========================================
+           9. أزرار التحكم (Controls)
+           ========================================= */
+        .controls-area {
+            height: 70px;
+            background: #fff;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            z-index: 10;
+        }
+
+        .slide-number {
+            font-size: 1rem;
+            color: #888;
+            font-weight: bold;
+            font-family: sans-serif;
+        }
+
+        .buttons-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(26, 77, 46, 0.2);
+        }
+
+        button:hover {
+            background-color: #143d24;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(26, 77, 46, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* =========================================
+           10. التجاوب مع الهواتف (Responsive)
+           ========================================= */
+        @media (max-width: 650px) {
+            .slider-container {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                border-top: none;
+            }
+            
+            .slide {
+                padding: 20px;
+            }
+
+            .main-title {
+                font-size: 1.8rem;
+            }
+
+            .info-grid {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .info-box {
+                width: 100%;
+            }
+
+            .doc-image {
+                max-height: 35vh;
+            }
+
+            .controls-area {
+                padding: 0 15px;
+            }
+
+            button {
+                padding: 8px 18px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -78,26 +416,39 @@
     
     <div class="slides-wrapper">
         
-        <div class="slide active cover-slide">
+        <div class="slide active cover-slide" style="text-align: center;">
             <div class="header-logos">
                 الجمهورية الجزائرية الديمقراطية الشعبية<br>
-                جامعة د. مولاي الطاهر - سعيدة<br>
-                كلية الحقوق والعلوم السياسية
+                جامعة د. مولاي الطاهر - ولاية سعيدة<br>
+                كلية الحقوق والعلوم السياسية | قسم القانون العام
             </div>
+
             <h1 class="main-title">منهجية صياغة النصوص التشريعية</h1>
-            <div class="sub-title">تحليل وثائقي لقانون الطيران المدني 98-06</div>
-            <div style="font-size: 0.9rem; color: #777; margin: 10px 0;">
-                السنة الثانية ليسانس | مقياس تقنيات البحث العلمي 2
+            <div class="sub-title">دراسة تحليلية لقانون الطيران المدني 98-06 (مدعمة بالوثائق)</div>
+
+            <div style="font-size: 0.9rem; color: #777; margin: 15px 0; font-weight: 600;">
+                السنة الثانية ليسانس | مقياس تقنيات البحث العلمي 2 | السداسي الرابع
             </div>
+
             <div class="info-grid">
                 <div class="info-box student-box">
-                    <h3>إعداد الطلبة</h3>
-                    <ul><li>بولنوار ميلود</li><li>خلف عبد الجبار</li><li>قادة محمد الأمين</li></ul>
+                    <h3>من إعداد الطلبة:</h3>
+                    <ul>
+                        <li>بولنوار ميلود</li>
+                        <li>خلف عبد الجبار</li>
+                        <li>قادة محمد الأمين</li>
+                    </ul>
                 </div>
                 <div class="info-box prof-box">
-                    <h3>إشراف الأستاذ</h3>
-                    <ul><li>د. خرشي عمر</li></ul>
+                    <h3>تحت إشراف الأستاذ:</h3>
+                    <ul>
+                        <li>د. خرشي عمر</li>
+                    </ul>
                 </div>
+            </div>
+            
+            <div style="margin-top: auto; font-size: 0.8rem; color: #aaa; padding-top: 10px;">
+                السنة الجامعية: 2025 / 2026
             </div>
         </div>
 
@@ -106,22 +457,26 @@
                 <h2 class="slide-title">خطة العرض (الفهرس)</h2>
             </div>
             <div class="content-body">
-                <p>للإحالة المباشرة إلى محاور العرض، اضغط على العنصر المطلوب:</p>
+                <p>اضغط على أي عنصر للانتقال مباشرة إلى المحور المخصص:</p>
                 <ul class="toc-list">
                     <li onclick="goToSlide(2)">
                         <span class="toc-number">1</span>
-                        البيانات الشكلية للنص (تحليل العنوان)
+                        مقدمة: ماهية الصياغة التشريعية
                     </li>
                     <li onclick="goToSlide(3)">
                         <span class="toc-number">2</span>
-                        المرجعية الدستورية والدولية (الديباجة)
+                        البيانات الشكلية للنص (تحليل وثيقة العنوان)
                     </li>
                     <li onclick="goToSlide(4)">
                         <span class="toc-number">3</span>
-                        المواءمة والانسجام التشريعي (قائمة التأشيرات)
+                        المرجعية الدستورية (تحليل ديباجة القانون)
                     </li>
                     <li onclick="goToSlide(5)">
                         <span class="toc-number">4</span>
+                        الانسجام التشريعي (تحليل قائمة التأشيرات)
+                    </li>
+                    <li onclick="goToSlide(6)">
+                        <span class="toc-number">5</span>
                         الخاتمة والنتائج
                     </li>
                 </ul>
@@ -130,67 +485,99 @@
 
         <div class="slide">
             <div class="slide-header">
-                <h2 class="slide-title">1. البيانات الشكلية (تحليل العنوان)</h2>
+                <h2 class="slide-title">1. مقدمة: أهمية الصياغة</h2>
             </div>
             <div class="content-body">
-                <p>تبدأ المنهجية بضبط "الهوية الزمنية والقانونية" للنص. تظهر الوثيقة أدناه دقة المشرع في تحديد:</p>
+                <p>تعتبر الصياغة التشريعية "فن" وعلم تحويل السياسة القانونية إلى نصوص ملزمة وقابلة للتطبيق. يهدف هذا العرض إلى تحليل المنهجية المتبعة في صياغة <strong>القانون رقم 98-06</strong>.</p>
+                
+                <div class="academic-highlight-box">
+                    <strong>إشكالية العرض:</strong> كيف وفق المشرع الجزائري بين القواعد الدولية الصارمة (اتفاقية شيكاغو) والسيادة الوطنية من خلال البناء الفني للنص؟
+                </div>
+                
+                <p>سنعتمد في هذا العرض على <strong>المنهج التحليلي الوثائقي</strong>، حيث سنقوم بتفكيك صفحات من الجريدة الرسمية لاستخراج تقنيات الصياغة.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">2. البيانات الشكلية (تحليل العنوان)</h2>
+            </div>
+            <div class="content-body">
+                <p>أول خطوة في المنهجية هي ضبط "الهوية الزمنية والقانونية" للنص. تظهر الوثيقة أدناه دقة المشرع في صياغة العنوان:</p>
+                
                 <div class="doc-container">
                     <img src="01.jpg" alt="تحليل بيانات القانون" class="doc-image">
-                    <div class="doc-caption">وثيقة (1): تفكيك البنية الشكلية (التاريخ الهجري/الميلادي والرقم).</div>
+                    <div class="doc-caption">وثيقة (1): تفكيك البنية الشكلية (الرقم، التاريخ المزدوج، الموضوع).</div>
                 </div>
-                <ul style="font-size: 0.9rem; margin-top: 10px;">
-                    <li><strong>الرقم 98-06:</strong> سنة الإصدار (98) والرقم التسلسلي (06).</li>
-                    <li><strong>التقويم المزدوج:</strong> 3 ربيع الأول 1419هـ الموافق لـ 27 يونيو 1998م.</li>
+                
+                <ul style="font-size: 0.95rem;">
+                    <li><strong>الرقم 98-06:</strong> يشير إلى سنة الإصدار (1998) والرقم التسلسلي (06) لتسهيل الأرشفة.</li>
+                    <li><strong>التقويم المزدوج:</strong> ذكر التاريخ الهجري (3 ربيع الأول 1419) والميلادي (27 يونيو 1998) معاً.</li>
+                    <li><strong>وحدة الموضوع:</strong> تحديد المجال بدقة "يحدد القواعد العامة للطيران المدني".</li>
                 </ul>
             </div>
         </div>
 
         <div class="slide">
             <div class="slide-header">
-                <h2 class="slide-title">2. المرجعية الدستورية والدولية</h2>
+                <h2 class="slide-title">3. المرجعية الدستورية والدولية</h2>
             </div>
             <div class="content-body">
-                <p>يؤسس المشرع شرعية القانون بالاستناد إلى "النصوص الأعلى درجة" (التدرج الهرمي للقوانين):</p>
+                <p>يؤسس المشرع شرعية القانون بالاستناد إلى "النصوص الأعلى درجة" (التدرج الهرمي للقوانين) في الديباجة:</p>
+                
                 <div class="doc-container">
                     <img src="02.jpeg" alt="ديباجة القانون" class="doc-image">
                     <div class="doc-caption">وثيقة (2): الاستناد للدستور واتفاقية شيكاغو 1944.</div>
                 </div>
-                <p style="font-size: 0.9rem;">لاحظ عبارة "بناءً على الدستور" وذكر الاتفاقيات الدولية، مما يمنح النص صبغة سيادية متوافقة مع القانون الدولي.</p>
+                
+                <p style="font-size: 0.95rem;">
+                    لاحظ عبارة <strong>"بناءً على الدستور"</strong> (المواد 17، 98، 122) وذكر انضمام الجزائر لاتفاقية شيكاغو، مما يمنح النص صبغة سيادية متوافقة مع القانون الدولي.
+                </p>
             </div>
         </div>
 
         <div class="slide">
             <div class="slide-header">
-                <h2 class="slide-title">3. المواءمة والانسجام التشريعي</h2>
+                <h2 class="slide-title">4. المواءمة والانسجام التشريعي</h2>
             </div>
             <div class="content-body">
-                <p>لضمان عدم تعارض القانون الجديد مع المنظومة القديمة، يقوم المشرع بسرد القوانين ذات الصلة (Penal, Customs, etc):</p>
+                <p>لضمان وحدة النظام القانوني، يستخدم المشرع تقنية "التأشيرات" (Visas) لسرد النصوص السابقة ذات الصلة:</p>
+                
                 <div class="doc-container">
                     <img src="03.jpg" alt="قائمة القوانين المرجعية" class="doc-image">
-                    <div class="doc-caption">وثيقة (3): تقنية "التأشيرات" (Visas) لربط القانون بمحيطه التشريعي.</div>
+                    <div class="doc-caption">وثيقة (3): ربط القانون بمحيطه التشريعي (بمقتضى...).</div>
                 </div>
-                <p style="font-size: 0.9rem;">تظهر الوثيقة استحضار الأوامر والمراسيم منذ الستينيات (مثل الأمر 66-155 و 75-58) لضمان وحدة القانون.</p>
+                
+                <p style="font-size: 0.95rem;">
+                    تظهر الوثيقة استحضار الأوامر والمراسيم منذ الستينيات (مثل الأمر 66-155 قانون الإجراءات الجزائية، والأمر 75-58 القانون المدني) لتفادي أي تعارض في المصطلحات أو الأحكام.
+                </p>
             </div>
         </div>
 
         <div class="slide final-slide">
             <div class="slide-header">
-                <h2 class="slide-title">الخاتمة</h2>
+                <h2 class="slide-title">الخاتمة والنتائج</h2>
             </div>
-            <div class="content-body" style="text-align: center; display: flex; flex-direction: column; justify-content: center; height: 60%;">
-                <p>من خلال استقراء الوثائق الثلاث، نستنتج أن المشرع الجزائري التزم بـ:</p>
+            <div class="content-body" style="text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                <p>من خلال الدراسة التحليلية لوثائق الجريدة الرسمية للقانون 98-06، نستنتج أن المشرع الجزائري التزم بـ:</p>
+                
                 <div class="conclusion-box">
-                    <strong>الدقة الشكلية</strong> (الوثيقة 1) + <strong>الشرعية الدستورية</strong> (الوثيقة 2) + <strong>التكامل التشريعي</strong> (الوثيقة 3).
+                    <strong>1. الدقة الشكلية:</strong> في تحديد هوية النص (الوثيقة 1).<br>
+                    <strong>2. الشرعية الدستورية:</strong> في ربط النص بالدستور (الوثيقة 2).<br>
+                    <strong>3. الأمن القانوني:</strong> عبر ضمان الانسجام مع المنظومة التشريعية القديمة (الوثيقة 3).
                 </div>
+                
                 <br>
-                <button onclick="goToSlide(1)" style="margin-top: 20px; background: var(--secondary-color);">العودة للفهرس</button>
+                <button onclick="goToSlide(1)" style="margin: 20px auto; background: var(--secondary-color); width: fit-content;">العودة للفهرس</button>
+                
+                <h3 class="thank-you">شكراً لحسن إصغائكم</h3>
             </div>
         </div>
 
     </div>
 
     <div class="controls-area">
-        <div class="slide-number" id="slideNumber">1 / 6</div>
+        <div class="slide-number" id="slideNumber">1 / 7</div>
         <div class="buttons-group">
             <button id="prevBtn">السابق</button>
             <button id="nextBtn">التالي</button>
@@ -199,21 +586,113 @@
 
 </div>
 
-<script src="script.js"></script>
 <script>
-    // إضافة دالة الانتقال المباشر للفهرس
-    // هذه الدالة ستعمل مع السكربت الموجود في ملف script.js
-    function goToSlide(index) {
-        // الوصول للمتغيرات والدوال المعرفة في النطاق العام
-        // نحتاج لتعديل بسيط في script.js ليعمل هذا بشكل مثالي
-        // ولكن كحل سريع هنا، سنقوم بمحاكاة النقر أو تعديل المتغير
-        
-        // الطريقة الأفضل: تحديث المتغير global وإعادة رسم الواجهة
-        // سنعتمد على أن script.js سيتم تعديله أدناه ليدعم هذه الدالة
-        if (window.jumpToSlide) {
-            window.jumpToSlide(index);
+    document.addEventListener('DOMContentLoaded', function() {
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideNumberDisplay = document.getElementById('slideNumber');
+
+        // تحديث واجهة المستخدم (الأزرار ورقم الصفحة)
+        function updateUI() {
+            // زر السابق
+            prevBtn.disabled = currentSlide === 0;
+            
+            // زر التالي
+            if(currentSlide === totalSlides - 1) {
+                nextBtn.innerHTML = "إنهاء العرض";
+                nextBtn.style.backgroundColor = "var(--secondary-color)";
+            } else {
+                nextBtn.innerHTML = "التالي";
+                nextBtn.disabled = false;
+                nextBtn.style.backgroundColor = ""; // إعادة اللون الأصلي
+            }
+
+            // رقم الصفحة
+            slideNumberDisplay.textContent = `${currentSlide + 1} / ${totalSlides}`;
         }
-    }
+
+        // دالة تغيير الشريحة
+        function changeSlide(direction) {
+            // إخفاء الشريحة الحالية
+            slides[currentSlide].classList.remove('active');
+            
+            // حساب الشريحة الجديدة
+            currentSlide += direction;
+
+            // منع تجاوز الحدود
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+
+            // إظهار الشريحة الجديدة
+            slides[currentSlide].classList.add('active');
+            
+            // إعادة التمرير لأعلى الشريحة الجديدة (مهم للهواتف)
+            slides[currentSlide].scrollTop = 0;
+            
+            updateUI();
+        }
+
+        // === دالة الانتقال المباشر (للفهرس) ===
+        // جعلناها global window function لتعمل مع onclick في HTML
+        window.goToSlide = function(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = index;
+            
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+
+            slides[currentSlide].classList.add('active');
+            slides[currentSlide].scrollTop = 0;
+            updateUI();
+        }
+
+        // ربط الأزرار بالأحداث
+        prevBtn.addEventListener('click', () => changeSlide(-1));
+        nextBtn.addEventListener('click', () => changeSlide(1));
+
+        // --- دعم لوحة المفاتيح (الأسهم) ---
+        document.addEventListener('keydown', function(event) {
+            // لأن الاتجاه RTL: السهم الأيسر يعني تقدم، والأيمن يعني رجوع
+            if (event.key === "ArrowLeft") {
+                if (currentSlide < totalSlides - 1) changeSlide(1);
+            }
+            if (event.key === "ArrowRight") {
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        });
+
+        // --- دعم السحب (Touch Swipe) للهواتف ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const sliderContainer = document.getElementById('sliderContainer');
+
+        sliderContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        sliderContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const threshold = 60; // مسافة السحب اللازمة
+            if (touchStartX - touchEndX > threshold) {
+                // سحب لليسار (التالي)
+                if (currentSlide < totalSlides - 1) changeSlide(1);
+            }
+            if (touchEndX - touchStartX > threshold) {
+                // سحب لليمين (السابق)
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        }
+
+        // التهيئة الأولية
+        updateUI();
+    });
 </script>
 
 </body>
