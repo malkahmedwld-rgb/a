@@ -30,7 +30,6 @@
             font-family: 'Tajawal', sans-serif;
             background-color: var(--bg-color);
             height: 100vh;
-            /* حل لمشاكل متصفحات الجوال */
             height: 100dvh; 
             display: flex;
             justify-content: center;
@@ -44,7 +43,7 @@
         .slider-container {
             position: relative;
             width: 95%;
-            max-width: 1000px; /* عرض مناسب للحواسيب */
+            max-width: 1000px;
             height: 92%;
             max-height: 750px;
             background: var(--slide-bg);
@@ -58,7 +57,7 @@
 
         .slides-wrapper {
             position: relative;
-            flex: 1; /* يأخذ المساحة المتبقية */
+            flex: 1;
             width: 100%;
             overflow: hidden;
             background: linear-gradient(to bottom, #ffffff 0%, #f7f9f8 100%);
@@ -79,9 +78,9 @@
             display: flex;
             flex-direction: column;
             pointer-events: none;
-            overflow-y: auto; /* للسماح بالتمرير داخل الشريحة */
+            overflow-y: auto;
             scrollbar-width: thin;
-            transform: translateX(20px); /* تأثير حركة الدخول */
+            transform: translateX(20px);
         }
 
         .slide.active {
@@ -139,14 +138,6 @@
             color: #333;
         }
 
-        .content-body ul {
-            padding-right: 20px;
-        }
-
-        .content-body li {
-            margin-bottom: 10px;
-        }
-
         /* =========================================
            5. مربعات المعلومات (Info Boxes)
            ========================================= */
@@ -189,7 +180,40 @@
         }
 
         /* =========================================
-           6. الفهرس التفاعلي (Table of Contents)
+           6. زر المسودة (الجديد)
+           ========================================= */
+        .draft-btn-container {
+            margin-top: 30px;
+            text-align: center;
+            z-index: 50; /* لضمان أنه قابل للنقر */
+            position: relative;
+        }
+
+        .draft-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #fff;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(26, 77, 46, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .draft-btn:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(26, 77, 46, 0.25);
+        }
+
+        /* =========================================
+           7. الفهرس التفاعلي
            ========================================= */
         .toc-list {
             list-style: none;
@@ -236,7 +260,7 @@
         }
 
         /* =========================================
-           7. تنسيق الصور والوثائق (Documents)
+           8. تنسيق الصور والوثائق
            ========================================= */
         .doc-container {
             text-align: center;
@@ -248,7 +272,7 @@
         }
 
         .doc-image {
-            max-height: 45vh; /* ارتفاع ديناميكي */
+            max-height: 45vh;
             max-width: 100%;
             width: auto;
             border: 3px solid #fff;
@@ -259,10 +283,7 @@
             transition: transform 0.3s;
         }
 
-        /* تكبير الصورة عند وضع الفأرة عليها (للحاسوب) */
-        .doc-image:hover {
-            transform: scale(1.02);
-        }
+        .doc-image:hover { transform: scale(1.02); }
 
         .doc-caption {
             margin-top: 12px;
@@ -272,13 +293,13 @@
             padding: 5px 15px;
             display: inline-block;
             border-radius: 20px;
-            border: 1px solid #d4af37; /* لون ذهبي */
+            border: 1px solid #d4af37;
             font-weight: bold;
             color: #333;
         }
 
         /* =========================================
-           8. الخاتمة والإشكاليات
+           9. الخاتمة
            ========================================= */
         .academic-highlight-box {
             background-color: var(--accent-light);
@@ -310,7 +331,7 @@
         }
 
         /* =========================================
-           9. أزرار التحكم (Controls)
+           10. أزرار التحكم
            ========================================= */
         .controls-area {
             height: 70px;
@@ -323,19 +344,10 @@
             z-index: 10;
         }
 
-        .slide-number {
-            font-size: 1rem;
-            color: #888;
-            font-weight: bold;
-            font-family: sans-serif;
-        }
+        .slide-number { font-size: 1rem; color: #888; font-weight: bold; font-family: sans-serif; }
+        .buttons-group { display: flex; gap: 15px; }
 
-        .buttons-group {
-            display: flex;
-            gap: 15px;
-        }
-
-        button {
+        button.nav-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
@@ -349,64 +361,18 @@
             box-shadow: 0 3px 8px rgba(26, 77, 46, 0.2);
         }
 
-        button:hover {
-            background-color: #143d24;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(26, 77, 46, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        button:disabled {
-            background-color: #e0e0e0;
-            color: #a0a0a0;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
+        button.nav-btn:hover { background-color: #143d24; transform: translateY(-2px); }
+        button.nav-btn:disabled { background-color: #e0e0e0; color: #a0a0a0; cursor: not-allowed; box-shadow: none; transform: none; }
 
         /* =========================================
-           10. التجاوب مع الهواتف (Responsive)
+           11. التجاوب (Responsive)
            ========================================= */
         @media (max-width: 650px) {
-            .slider-container {
-                width: 100%;
-                height: 100%;
-                border-radius: 0;
-                border-top: none;
-            }
-            
-            .slide {
-                padding: 20px;
-            }
-
-            .main-title {
-                font-size: 1.8rem;
-            }
-
-            .info-grid {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .info-box {
-                width: 100%;
-            }
-
-            .doc-image {
-                max-height: 35vh;
-            }
-
-            .controls-area {
-                padding: 0 15px;
-            }
-
-            button {
-                padding: 8px 18px;
-                font-size: 0.9rem;
-            }
+            .slider-container { width: 100%; height: 100%; border-radius: 0; border-top: none; }
+            .slide { padding: 20px; }
+            .main-title { font-size: 1.8rem; }
+            .info-grid { flex-direction: column; gap: 10px; }
+            .draft-btn { padding: 10px 20px; font-size: 0.95rem; width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -445,6 +411,12 @@
                         <li>د. خرشي عمر</li>
                     </ul>
                 </div>
+            </div>
+
+            <div class="draft-btn-container">
+                <a href="draft.html" target="_blank" class="draft-btn">
+                   📄 مسودة البحث عن منهجية صياغة النصوص التشريعية
+                </a>
             </div>
             
             <div style="margin-top: auto; font-size: 0.8rem; color: #aaa; padding-top: 10px;">
@@ -568,7 +540,7 @@
                 </div>
                 
                 <br>
-                <button onclick="goToSlide(1)" style="margin: 20px auto; background: var(--secondary-color); width: fit-content;">العودة للفهرس</button>
+                <button onclick="goToSlide(1)" class="nav-btn" style="margin: 20px auto; background: var(--secondary-color);">العودة للفهرس</button>
                 
                 <h3 class="thank-you">شكراً لحسن إصغائكم</h3>
             </div>
@@ -579,8 +551,8 @@
     <div class="controls-area">
         <div class="slide-number" id="slideNumber">1 / 7</div>
         <div class="buttons-group">
-            <button id="prevBtn">السابق</button>
-            <button id="nextBtn">التالي</button>
+            <button id="prevBtn" class="nav-btn">السابق</button>
+            <button id="nextBtn" class="nav-btn">التالي</button>
         </div>
     </div>
 
@@ -607,7 +579,7 @@
             } else {
                 nextBtn.innerHTML = "التالي";
                 nextBtn.disabled = false;
-                nextBtn.style.backgroundColor = ""; // إعادة اللون الأصلي
+                nextBtn.style.backgroundColor = ""; 
             }
 
             // رقم الصفحة
@@ -616,27 +588,20 @@
 
         // دالة تغيير الشريحة
         function changeSlide(direction) {
-            // إخفاء الشريحة الحالية
             slides[currentSlide].classList.remove('active');
             
-            // حساب الشريحة الجديدة
             currentSlide += direction;
 
-            // منع تجاوز الحدود
             if (currentSlide < 0) currentSlide = 0;
             if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
 
-            // إظهار الشريحة الجديدة
             slides[currentSlide].classList.add('active');
-            
-            // إعادة التمرير لأعلى الشريحة الجديدة (مهم للهواتف)
-            slides[currentSlide].scrollTop = 0;
+            slides[currentSlide].scrollTop = 0; // صعود للأعلى عند التغيير
             
             updateUI();
         }
 
-        // === دالة الانتقال المباشر (للفهرس) ===
-        // جعلناها global window function لتعمل مع onclick في HTML
+        // دالة الانتقال المباشر (للفهرس)
         window.goToSlide = function(index) {
             slides[currentSlide].classList.remove('active');
             currentSlide = index;
@@ -653,9 +618,8 @@
         prevBtn.addEventListener('click', () => changeSlide(-1));
         nextBtn.addEventListener('click', () => changeSlide(1));
 
-        // --- دعم لوحة المفاتيح (الأسهم) ---
+        // دعم لوحة المفاتيح
         document.addEventListener('keydown', function(event) {
-            // لأن الاتجاه RTL: السهم الأيسر يعني تقدم، والأيمن يعني رجوع
             if (event.key === "ArrowLeft") {
                 if (currentSlide < totalSlides - 1) changeSlide(1);
             }
@@ -664,7 +628,7 @@
             }
         });
 
-        // --- دعم السحب (Touch Swipe) للهواتف ---
+        // دعم السحب (Swipe)
         let touchStartX = 0;
         let touchEndX = 0;
         const sliderContainer = document.getElementById('sliderContainer');
@@ -679,7 +643,7 @@
         }, {passive: true});
 
         function handleSwipe() {
-            const threshold = 60; // مسافة السحب اللازمة
+            const threshold = 60;
             if (touchStartX - touchEndX > threshold) {
                 // سحب لليسار (التالي)
                 if (currentSlide < totalSlides - 1) changeSlide(1);
@@ -690,7 +654,7 @@
             }
         }
 
-        // التهيئة الأولية
+        // التهيئة
         updateUI();
     });
 </script>
